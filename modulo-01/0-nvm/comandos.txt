@@ -1,0 +1,27 @@
+instala versão 23
+| nvm install 23
+
+Instala versão Log-Term-Support (Versão recomendada)
+| nvm install --lts
+
+nvm list
+| lista versões instaladas
+
+nvm use 23
+| Usa a versão 23 que já está instalada na minha maquina
+
+Define a versão padrão do Node.js para ser a 18
+| nvm alias default 23 -> 
+
+Crie arquivo `.nvmrc` com a versão desejada e use `nvm use` (dentro da pasta no terminal) para ativar aquela versão.
+| nvm use
+
+Criar arquivo `.nvmrc` automatico com versão atual no diretorio escolhido
+| node -v > .nvmrc
+
+Criar a propriedade "engines" no `package.json`
+|   "engines": {
+    "node": "v23"
+  },
+
+=[Boa prática é sempre declarar o node no `.nvmrc` e no package.json para manutenabilidade futura]=
