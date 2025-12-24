@@ -21,7 +21,7 @@ Criar arquivo `.nvmrc` automatico com versão atual no diretorio escolhido
 
 Criar a propriedade "engines" no `package.json`
 |   "engines": {
-    "node": "v23"
+    "node": "23"
   },
 
 =[Boa prática é sempre declarar o node no `.nvmrc` e no package.json para manutenabilidade futura]=

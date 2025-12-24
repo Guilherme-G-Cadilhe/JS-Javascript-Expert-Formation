@@ -1,0 +1,4 @@
+Comandos para rodar Testes:
+
+> npm test
+> npm t

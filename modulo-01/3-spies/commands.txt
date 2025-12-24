@@ -1,0 +1,11 @@
+Intercepta as chamadas da função escolhida para rastrea-la
+> const spy = sinon.spy(fibonacci, fibonacci.execute.name)
+
+Mostra todas as chamadas da função:
+> spy.getCalls()
+
+Pega uma chamada especifica:
+> spy.getCall(2)
+
+Pega o numero de chamadas:
+> spy.callCount

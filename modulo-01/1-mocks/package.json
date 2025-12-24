@@ -1,16 +1,16 @@
 {
-  "name": "0-nvm",
+  "name": "mocks",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-    "node": "23"
+    "test": "node index.test.js"
   },
   "keywords": [],
-  "author": "",
+  "engines": {
+    "node": "18"
+  },
+  "author": "guilherme g cadilhe",
   "license": "ISC",
   "type": "commonjs"
 }

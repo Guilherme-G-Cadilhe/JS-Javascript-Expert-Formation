@@ -1,0 +1,5 @@
+(Deixar tudo muito bem claro do que será feito antes mesmo de começar a codar)
+
+The file should have the following fields: {id, name, profession, age}
+The file should not be empty
+The file should not longer than 4 lines including headers

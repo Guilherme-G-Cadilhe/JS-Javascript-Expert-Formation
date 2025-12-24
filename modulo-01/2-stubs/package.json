@@ -1,0 +1,19 @@
+{
+  "name": "stubs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./src/service.test.js"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "22"
+  },
+  "author": "guilherme g cadilhe",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "sinon": "^21.0.1"
+  }
+}
