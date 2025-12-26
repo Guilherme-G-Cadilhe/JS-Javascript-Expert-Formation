@@ -1,0 +1,111 @@
+========================================================================
+CHEAT SHEET: SINON (SPIES, STUBS & MOCKS)
+Manipulação de comportamento para testes isolados
+========================================================================
+
+[ INSTALAÇÃO ]
+npm i -D sinon
+
+
+[ RESUMO RÁPIDO: QUANDO USAR O QUE? ]
+
+# SPY (Espião):  
+# "Quero saber se a função X foi chamada e com quais parâmetros."
+# -> Não altera o comportamento da função (ela executa normalmente).
+
+# STUB (Substituto): 
+# "Quero forçar a função X a retornar um erro ou um valor fixo."
+# -> Impede a função original de executar (ideal para acesso a banco/API).
+
+# MOCK (Contrato): 
+# "Quero definir um 'roteiro' rígido que a função X deve seguir."
+# -> Define expectativas ANTES da execução e valida tudo no final.
+
+
+[ SETUP PADRÃO (AFTER/BEFORE) ]
+
+const sinon = require('sinon')
+
+# Boa prática: Sempre restaurar o comportamento original após os testes
+afterEach(() => {
+    sinon.restore(); 
+})
+
+
+[ 1. STUBS (O MAIS UTILIZADO) ]
+# Cenário: Simular uma leitura de arquivo (fs) ou chamada HTTP sem fazer de verdade.
+
+const fs = require('fs/promises')
+
+# Cria o Stub
+const readFileStub = sinon.stub(fs, 'readFile')
+
+# Configura retorno de Sucesso (Promise)
+readFileStub.resolves('conteudo-falso-do-arquivo')
+
+# Configura retorno de Sucesso (Síncrono)
+readFileStub.returns('valor-simples')
+
+# Configura retorno de Erro
+readFileStub.rejects(new Error('Arquivo não encontrado'))
+
+# Validando se o Stub foi chamado
+const result = await fs.readFile('arquivo.txt')
+assert.strictEqual(result, 'conteudo-falso-do-arquivo')
+assert.ok(readFileStub.calledOnce)
+
+
+[ 2. SPIES (VIGIAR SEM TOCAR) ]
+# Cenário: Verificar se um `console.log` ou uma função de log interna foi acionada.
+
+const service = { 
+    save: (data) => console.log('salvando', data) 
+}
+
+# Cria o Spy
+const spySave = sinon.spy(service, 'save')
+
+# Executa o código
+service.save({ id: 1 })
+
+# Asserções do Spy
+assert.ok(spySave.called)                      # Foi chamada pelo menos 1 vez?
+assert.ok(spySave.calledOnce)                  # Foi chamada exatamente 1 vez?
+assert.ok(spySave.calledWith({ id: 1 }))       # Foi chamada com esse exato parametro?
+assert.strictEqual(spySave.callCount, 1)       # Quantidade de chamadas
+
+
+[ 3. MOCKS (O MAIS RÍGIDO) ]
+# Cenário: Validar comportamento estrito. Se sair do roteiro, o teste falha.
+
+const service = { 
+    enviarEmail: () => { /* lógica real */ } 
+}
+
+# Cria o Mock (diferente do stub, define a expectativa ANTES)
+const mock = sinon.mock(service)
+
+# Define a expectativa: Deve chamar 'enviarEmail' 1 vez com args especificos
+mock.expects('enviarEmail')
+    .once()
+    .withArgs('email@teste.com')
+    .returns('enviado')
+
+# Executa o código que usa o service
+service.enviarEmail('email@teste.com')
+
+# Verifica se o roteiro foi cumprido
+mock.verify()  # Se não chamou, ou chamou errado, explode erro aqui.
+
+
+[ FAKE TIMERS (PARA NÃO ESPERAR SETTIMEOUT) ]
+# Cenário: Testar código que roda daqui a 1 hora ou 10 segundos instantaneamente.
+
+# "Congela" o tempo
+const clock = sinon.useFakeTimers()
+
+# Avança o tempo (ms)
+clock.tick(1000) 
+
+# Restaura o relógio real
+clock.restore()

@@ -1,0 +1,51 @@
+========================================================================
+CHEAT SHEET: NYC (ISTANBUL)
+Ferramenta para medir cobertura de código (Code Coverage)
+========================================================================
+
+[ COMANDOS DE EXECUÇÃO ]
+
+# Rodar testes com cobertura (básico)
+npx nyc npx mocha ./src/**/*.test.js
+
+# Rodar testes e gerar relatório visual
+npx nyc --reporter=html --reporter=text npx mocha ./src/**/*.test.js
+
+
+[ CONFIGURAÇÃO (.nycrc ou nycrc.json) ]
+
+{
+  "all": true,              # Verifica todos arquivos, não só os testados
+  "check-coverage": true,   # Falha o script se a meta não for atingida
+  "lines": 100,             # Meta de linhas executadas
+  "statements": 100,        # Meta de instruções (sentenças)
+  "functions": 100,         # Meta de funções chamadas
+  "branches": 100,          # Meta de condicionais (if/else/switch) cobertos
+  "reporter": ["html", "text"] 
+}
+
+# Dica: "branches" é geralmente o mais difícil de atingir 100%, 
+# pois exige testar o caminho do IF e o caminho do ELSE.
+
+
+[ ENTENDENDO O REPORT (TERMINAL) ]
+
+File      | % Stmts | % Branch | % Funcs | % Lines |
+----------|---------|----------|---------|---------|
+All files |     100 |      100 |     100 |     100 |
+ api.js   |     100 |      100 |     100 |     100 |
+
+# Se "Branch" estiver abaixo de 100%, significa que alguma condição
+# (um 'if' ou um valor padrão '||') não foi testada nos dois cenários (true/false).
+
+
+[ VISUALIZANDO O RELATÓRIO HTML ]
+
+1. Rode o comando com reporter html.
+2. Uma pasta "coverage" será criada na raiz.
+3. Abra o arquivo index.html no navegador:
+   
+   open ./coverage/index.html  (Mac)
+   start ./coverage/index.html (Windows)
+   
+# Lá você vê exatamente qual linha de código ficou vermelha (não testada).

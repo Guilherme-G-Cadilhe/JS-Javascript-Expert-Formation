@@ -1,0 +1,54 @@
+========================================================================
+CHEAT SHEET: SUPERTEST (INTEGRATION TESTING)
+Lib para simular requisições HTTP sem precisar subir o servidor externamente
+========================================================================
+
+[ SETUP INICIAL ]
+
+const supertest = require('supertest')
+const app = require('./api') // Importa a instância do servidor (http.createServer)
+
+# Inicializa o agente passando a app
+const request = supertest(app) 
+
+
+[ REQUISIÇÕES BÁSICAS (GET) ]
+
+# Requisição simples verificando apenas status code
+await request.get('/contact').expect(200)
+
+# Requisição verificando o corpo da resposta (Texto exato)
+const response = await request.get('/contact')
+assert.strictEqual(response.text, 'Contact Us Page')
+
+
+[ ENVIANDO DADOS (POST/PUT) ]
+
+# Envia JSON no corpo da requisição (.send)
+const response = await request
+    .post('/login')
+    .send({ username: 'guilhermecadilhe', password: '123' })
+    .expect(200)
+
+assert.strictEqual(response.text, 'Login Success')
+
+
+[ VALIDANDO ERROS E STATUS ]
+
+# Validando rota inexistente ou erro de permissão
+const response = await request
+    .post('/login')
+    .send({ username: 'usuario_errado', password: '123' })
+    .expect(401) // Espera Unauthorized
+
+assert.ok(response.unauthorized) // Boolean auxiliar do supertest
+assert.strictEqual(response.text, 'Login Failed')
+
+
+[ PROPRIEDADES ÚTEIS DO RESPONSE ]
+
+response.text        # O corpo da resposta como string
+response.body        # O corpo da resposta como Objeto (se o server retornou JSON)
+response.statusCode  # O código HTTP (200, 404, 500)
+response.headers     # Cabeçalhos da resposta (ex: content-type)
+response.ok          # Boolean: true se status for 2xx
