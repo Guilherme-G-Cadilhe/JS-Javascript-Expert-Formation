@@ -1,0 +1,23 @@
+{
+  "name": "tdd-stories",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/api.js",
+    "test:dev": "npx mocha -w ./src/**/*.test.js",
+    "test": "npx mocha ./src/**/*.test.js",
+    "test:cov": "npx nyc npx mocha ./src/**/*.test.js",
+    "seed": "node ./seed"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "22"
+  },
+  "author": "guilherme g cadilhe",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@faker-js/faker": "^10.1.0"
+  }
+}
